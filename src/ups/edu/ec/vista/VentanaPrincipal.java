@@ -12,26 +12,43 @@ package ups.edu.ec.vista;
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     private VentanaRegistrarUsuario ventanaRegistrarUsuario;
+    private VentanaIniciarSesion ventanaIniciarSesion;
+    private VentanaRegistroTelefonos ventanaRegistroTelefonos;
+    private VentanaGestionTelefono ventanaGestionTelefono;
+    private VentanaGestionUsuario ventanaGestionUsuario;
     
+
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
         ventanaRegistrarUsuario = new VentanaRegistrarUsuario();
-        
+        ventanaIniciarSesion = new VentanaIniciarSesion();
+        ventanaRegistroTelefonos = new VentanaRegistroTelefonos();
+        ventanaGestionTelefono = new VentanaGestionTelefono();
+        ventanaGestionUsuario = new VentanaGestionUsuario();
         
         
         desktopPane.add(ventanaRegistrarUsuario);
-        
-        
-        this.setExtendedState(this.MAXIMIZED_BOTH);
+        desktopPane.add(ventanaIniciarSesion);
+        desktopPane.add(ventanaRegistroTelefonos);
+        desktopPane.add(ventanaGestionTelefono);
+        desktopPane.add(ventanaGestionUsuario);
+               
+
+        this.setExtendedState(VentanaPrincipal.MAXIMIZED_BOTH);
     }
 
-    public void cerrarVentanas(){
+    public void cerrarVentanas() {
         ventanaRegistrarUsuario.setVisible(false);
+        ventanaIniciarSesion.setVisible(false);
+        ventanaRegistroTelefonos.setVisible(false);
+        ventanaGestionTelefono.setVisible(false);
+        ventanaGestionUsuario.setVisible(false);
+        
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,21 +60,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
+        menuMenu = new javax.swing.JMenu();
         menuItemCrearUsuario = new javax.swing.JMenuItem();
         menuItemIniciarSesion = new javax.swing.JMenuItem();
         menuItemCerrarSesion = new javax.swing.JMenuItem();
         menuItemTelefono = new javax.swing.JMenuItem();
         menuItemExit = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
+        menuGestion = new javax.swing.JMenu();
+        menuItemGestionUsuario = new javax.swing.JMenuItem();
+        menuItemGestionTelefonos = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Agenda Telefonica");
 
-        fileMenu.setMnemonic('f');
-        fileMenu.setText("Menu");
+        menuMenu.setMnemonic('f');
+        menuMenu.setText("Menu");
 
         menuItemCrearUsuario.setMnemonic('o');
         menuItemCrearUsuario.setText("Crear Usuario");
@@ -66,19 +83,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 menuItemCrearUsuarioActionPerformed(evt);
             }
         });
-        fileMenu.add(menuItemCrearUsuario);
+        menuMenu.add(menuItemCrearUsuario);
 
         menuItemIniciarSesion.setMnemonic('s');
         menuItemIniciarSesion.setText("Iniciar Sesión");
-        fileMenu.add(menuItemIniciarSesion);
+        menuItemIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemIniciarSesionActionPerformed(evt);
+            }
+        });
+        menuMenu.add(menuItemIniciarSesion);
 
         menuItemCerrarSesion.setText("Cerrar Sesión");
         menuItemCerrarSesion.setEnabled(false);
-        fileMenu.add(menuItemCerrarSesion);
+        menuMenu.add(menuItemCerrarSesion);
 
         menuItemTelefono.setMnemonic('a');
         menuItemTelefono.setText("Teléfonos");
-        fileMenu.add(menuItemTelefono);
+        menuItemTelefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemTelefonoActionPerformed(evt);
+            }
+        });
+        menuMenu.add(menuItemTelefono);
 
         menuItemExit.setMnemonic('x');
         menuItemExit.setText("Exit");
@@ -87,22 +114,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 menuItemExitActionPerformed(evt);
             }
         });
-        fileMenu.add(menuItemExit);
+        menuMenu.add(menuItemExit);
 
-        menuBar.add(fileMenu);
+        menuBar.add(menuMenu);
 
-        editMenu.setMnemonic('e');
-        editMenu.setText("Gestión");
+        menuGestion.setMnemonic('e');
+        menuGestion.setText("Gestión");
+        menuGestion.setEnabled(false);
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Usuario");
-        editMenu.add(cutMenuItem);
+        menuItemGestionUsuario.setMnemonic('t');
+        menuItemGestionUsuario.setText("Usuario");
+        menuItemGestionUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemGestionUsuarioActionPerformed(evt);
+            }
+        });
+        menuGestion.add(menuItemGestionUsuario);
 
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Teléfonos");
-        editMenu.add(copyMenuItem);
+        menuItemGestionTelefonos.setMnemonic('y');
+        menuItemGestionTelefonos.setText("Teléfonos");
+        menuItemGestionTelefonos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemGestionTelefonosActionPerformed(evt);
+            }
+        });
+        menuGestion.add(menuItemGestionTelefonos);
 
-        menuBar.add(editMenu);
+        menuBar.add(menuGestion);
 
         setJMenuBar(menuBar);
 
@@ -130,7 +168,30 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ventanaRegistrarUsuario.setVisible(true);
     }//GEN-LAST:event_menuItemCrearUsuarioActionPerformed
 
-    
+    private void menuItemIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemIniciarSesionActionPerformed
+        // TODO add your handling code here:
+        cerrarVentanas();
+        ventanaIniciarSesion.setVisible(true);
+    }//GEN-LAST:event_menuItemIniciarSesionActionPerformed
+
+    private void menuItemTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemTelefonoActionPerformed
+        // TODO add your handling code here:
+        cerrarVentanas();
+        ventanaRegistroTelefonos.setVisible(true);
+    }//GEN-LAST:event_menuItemTelefonoActionPerformed
+
+    private void menuItemGestionTelefonosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGestionTelefonosActionPerformed
+        // TODO add your handling code here:
+        cerrarVentanas();
+        ventanaGestionTelefono.setVisible(true);
+    }//GEN-LAST:event_menuItemGestionTelefonosActionPerformed
+
+    private void menuItemGestionUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGestionUsuarioActionPerformed
+        // TODO add your handling code here:
+        cerrarVentanas();
+        ventanaGestionUsuario.setVisible(true);
+    }//GEN-LAST:event_menuItemGestionUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -167,17 +228,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuGestion;
     private javax.swing.JMenuItem menuItemCerrarSesion;
     private javax.swing.JMenuItem menuItemCrearUsuario;
     private javax.swing.JMenuItem menuItemExit;
+    private javax.swing.JMenuItem menuItemGestionTelefonos;
+    private javax.swing.JMenuItem menuItemGestionUsuario;
     private javax.swing.JMenuItem menuItemIniciarSesion;
     private javax.swing.JMenuItem menuItemTelefono;
+    private javax.swing.JMenu menuMenu;
     // End of variables declaration//GEN-END:variables
 
 }
