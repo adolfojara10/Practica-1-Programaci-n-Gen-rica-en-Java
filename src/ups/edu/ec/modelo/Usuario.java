@@ -85,13 +85,13 @@ public class Usuario {
     }
     
     public void actualizarTelefono(Telefono telefono){
-        Telefono telefonoCambiar = listaTelefonos.stream().filter(t -> t.getCodigo() == telefono.getCodigo()).findFirst().get();
+        var telefonoCambiar = listaTelefonos.stream().filter(t -> t.getCodigo() == telefono.getCodigo()).findFirst().get();
         int index = listaTelefonos.indexOf(telefonoCambiar);
         listaTelefonos.add(index, telefono);
     }
     
     public void eliminarTelefono(int codigo){
-        Telefono telefonoEliminar = listaTelefonos.stream().filter(telefono -> telefono.getCodigo() == codigo).findFirst().get();
+        var telefonoEliminar = listaTelefonos.stream().filter(telefono -> telefono.getCodigo() == codigo).findFirst().get();
         listaTelefonos.remove(telefonoEliminar);
     }
 
