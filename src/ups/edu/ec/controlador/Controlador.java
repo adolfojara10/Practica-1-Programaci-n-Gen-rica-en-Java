@@ -5,12 +5,75 @@
  */
 package ups.edu.ec.controlador;
 
+import java.util.*;
+import ups.edu.ec.modelo.Telefono;
+import ups.edu.ec.modelo.Usuario;
+
 /**
  *
  * @author Adolfo
  * @param <U>
  * @param <T>
  */
-public class Controlador<U,T> {
+public class Controlador<U, T> {
+
+    private List<Usuario> listaUsuarios;
+    private List<Telefono> listaTelefonos;
+
+    public Controlador() {
+        listaUsuarios = new ArrayList<>();
+        listaTelefonos = new ArrayList<>();
+    }
+
+    public void createUsuario(Usuario usuario) {
+        listaUsuarios.add(usuario);
+    }
+
+    public Usuario readUsuario(String apellido) {
+        return listaUsuarios.stream().filter(usuario -> usuario.getApellido().equals(apellido)).findFirst().get();
+    }
+
+    public void updateUsuario(Usuario usuario) {
+        var usuarioUpdate = listaUsuarios.stream().filter(u -> u.getCedula().equals(usuario.getCedula())).findFirst().get();
+        int index = listaUsuarios.indexOf(usuarioUpdate);
+        listaUsuarios.add(index, usuario);
+    }
+
+    public void deleteUsuario(String cedula) {
+        var usuarioDelete = listaUsuarios.stream().filter(usu -> usu.getCedula().equals(cedula)).findFirst().get();
+        listaUsuarios.remove(usuarioDelete);
+    }
+
+    public Usuario iniciarSesion(String correo, String password) {
+        return listaUsuarios.stream().filter(u -> u.getCorreo().equals(correo) && u.getPassword().equals(password)).findFirst().get();
+    }
+
+    /*
+     * Crud telefono
+     */
+    public void createTelefono(Telefono telefono) {
+        listaTelefonos.add(telefono);
+    }
+
+    public Telefono readTelefono(String numero) {
+        return listaTelefonos.stream().filter(tele -> tele.getNumero().equals(numero)).findFirst().get();
+    }
+
+    public void updateTelefono(Telefono telefono) {
+        var telefonoUpdate = listaTelefonos.stream().filter(tele -> tele.getCodigo() == telefono.getCodigo()).findFirst().get();
+        int index = listaTelefonos.indexOf(telefonoUpdate);
+        listaTelefonos.add(index, telefono);
+    }
+
+    public void deleteTelefono(int codigo) {
+        var telefonoDelete = listaTelefonos.stream().filter(tele -> tele.getCodigo() == codigo).findFirst().get();
+        listaTelefonos.remove(telefonoDelete);
+    }
+
+    public List<Telefono> findAll(){
+        return listaTelefonos;
+    }
+    
+    
     
 }
