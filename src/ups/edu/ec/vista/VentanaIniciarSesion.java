@@ -5,19 +5,35 @@
  */
 package ups.edu.ec.vista;
 
+import javax.swing.JOptionPane;
+import ups.edu.ec.controlador.Controlador;
+import ups.edu.ec.modelo.Usuario;
+
 /**
  *
  * @author Adolfo
  */
 public class VentanaIniciarSesion extends javax.swing.JInternalFrame {
 
+    private Controlador<Usuario> controladorUsuario;
+    private VentanaPrincipal ventanaPrincipal;
+
     /**
      * Creates new form VentanaIniciarSesion
+     *
+     * @param controladorUsuario
      */
-    public VentanaIniciarSesion() {
+    public VentanaIniciarSesion(Controlador<Usuario> controladorUsuario, VentanaPrincipal ventanaPrincipal) {
         initComponents();
+
+        this.controladorUsuario = controladorUsuario;
+        this.ventanaPrincipal = ventanaPrincipal;
     }
 
+    public void limpiar(){
+        txtCorreo.setText("");
+        txtPassword.setText("");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,6 +54,28 @@ public class VentanaIniciarSesion extends javax.swing.JInternalFrame {
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Iniciar Sesión");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                formComponentHidden(evt);
+            }
+        });
 
         jLabel1.setText("Correo:");
 
@@ -45,9 +83,19 @@ public class VentanaIniciarSesion extends javax.swing.JInternalFrame {
 
         btnIniciarSesion.setBackground(new java.awt.Color(51, 51, 255));
         btnIniciarSesion.setText("Iniciar Sesión");
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSesionActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setBackground(new java.awt.Color(255, 51, 51));
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -108,6 +156,41 @@ public class VentanaIniciarSesion extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        // TODO add your handling code here:
+        var usuarioEncontrado = controladorUsuario.iniciarSesion(txtCorreo.getText(), String.valueOf(txtPassword.getPassword()));
+
+        if (usuarioEncontrado != null) {
+            JOptionPane.showMessageDialog(this, "Sesión iniciada con exito");
+            ventanaPrincipal.getMenuGestion().setEnabled(true);
+            ventanaPrincipal.getMenuItemCerrarSesion().setEnabled(true);
+            ventanaPrincipal.getMenuItemCrearUsuario().setEnabled(false);
+            ventanaPrincipal.getMenuItemIniciarSesion().setEnabled(false);
+            limpiar();
+            this.hide();
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado");
+        }
+
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_formInternalFrameClosed
+
+    private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_formComponentHidden
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

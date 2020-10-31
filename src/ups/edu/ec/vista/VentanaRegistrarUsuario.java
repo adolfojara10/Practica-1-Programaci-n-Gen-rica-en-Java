@@ -5,17 +5,33 @@
  */
 package ups.edu.ec.vista;
 
+import javax.swing.JOptionPane;
+import ups.edu.ec.controlador.Controlador;
+import ups.edu.ec.modelo.Usuario;
+
 /**
  *
  * @author Adolfo
  */
 public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
 
+    private Controlador<Usuario> controladorUsuario;
     /**
      * Creates new form VentanaRegistrarUsuario
+     * @param controladorUsuario
      */
-    public VentanaRegistrarUsuario() {
+    public VentanaRegistrarUsuario(Controlador<Usuario> controladorUsuario) {
         initComponents();
+        
+        this.controladorUsuario = controladorUsuario;
+    }
+   
+    public void limpiar(){
+        txtFormattedCedula.setValue("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCorreo.setText("");
+        txtPassword.setText("");
     }
 
     /**
@@ -39,11 +55,34 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
         txtCorreo = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
         btnCrear = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Registrar Usuario");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                formComponentHidden(evt);
+            }
+        });
 
         jLabel1.setText("Cédula:");
 
@@ -63,9 +102,19 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
 
         btnCrear.setBackground(new java.awt.Color(51, 51, 255));
         btnCrear.setText("Crear");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
 
-        jButton1.setBackground(new java.awt.Color(255, 51, 51));
-        jButton1.setText("Cancelar");
+        btnCancelar.setBackground(new java.awt.Color(255, 51, 51));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,7 +140,7 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
                 .addGap(122, 122, 122)
                 .addComponent(btnCrear)
                 .addGap(89, 89, 89)
-                .addComponent(jButton1)
+                .addComponent(btnCancelar)
                 .addContainerGap(140, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -120,7 +169,7 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrear)
-                    .addComponent(jButton1))
+                    .addComponent(btnCancelar))
                 .addGap(22, 22, 22))
         );
 
@@ -144,10 +193,42 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        // TODO add your handling code here:
+        
+        controladorUsuario.create(new Usuario((String)txtFormattedCedula.getValue(), 
+                txtNombre.getText(), txtApellido.getText(), txtCorreo.getText(), 
+                String.valueOf(txtPassword.getPassword())));
+        JOptionPane.showMessageDialog(this, "Usuario registrado con exito");
+        
+        this.hide();
+    }//GEN-LAST:event_btnCrearActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_formInternalFrameClosed
+
+    private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_formComponentHidden
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_formInternalFrameActivated
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCrear;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

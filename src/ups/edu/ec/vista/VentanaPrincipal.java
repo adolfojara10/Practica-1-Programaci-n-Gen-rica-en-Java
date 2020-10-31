@@ -5,6 +5,12 @@
  */
 package ups.edu.ec.vista;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import ups.edu.ec.controlador.Controlador;
+import ups.edu.ec.modelo.Telefono;
+import ups.edu.ec.modelo.Usuario;
+
 /**
  *
  * @author Adolfo
@@ -17,14 +23,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private VentanaGestionTelefono ventanaGestionTelefono;
     private VentanaGestionUsuario ventanaGestionUsuario;
     
+    private Controlador<Usuario> controladorUsuario;
+    private Controlador<Telefono> controladorTelefono;
 
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
-        ventanaRegistrarUsuario = new VentanaRegistrarUsuario();
-        ventanaIniciarSesion = new VentanaIniciarSesion();
+        
+        controladorUsuario = new Controlador<>();
+        controladorTelefono = new Controlador<>();
+        
+        ventanaRegistrarUsuario = new VentanaRegistrarUsuario(controladorUsuario);
+        ventanaIniciarSesion = new VentanaIniciarSesion(controladorUsuario, this);
         ventanaRegistroTelefonos = new VentanaRegistroTelefonos();
         ventanaGestionTelefono = new VentanaGestionTelefono();
         ventanaGestionUsuario = new VentanaGestionUsuario();
@@ -40,6 +52,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.setExtendedState(VentanaPrincipal.MAXIMIZED_BOTH);
     }
 
+    public JMenu getMenuGestion() {
+        return menuGestion;
+    }
+
+    public JMenuItem getMenuItemCerrarSesion() {
+        return menuItemCerrarSesion;
+    }
+
+    public JMenuItem getMenuItemCrearUsuario() {
+        return menuItemCrearUsuario;
+    }
+
+    public JMenuItem getMenuItemIniciarSesion() {
+        return menuItemIniciarSesion;
+    }
+
+    
     public void cerrarVentanas() {
         ventanaRegistrarUsuario.setVisible(false);
         ventanaIniciarSesion.setVisible(false);
@@ -96,6 +125,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         menuItemCerrarSesion.setText("Cerrar Sesión");
         menuItemCerrarSesion.setEnabled(false);
+        menuItemCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCerrarSesionActionPerformed(evt);
+            }
+        });
         menuMenu.add(menuItemCerrarSesion);
 
         menuItemTelefono.setMnemonic('a');
@@ -191,6 +225,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cerrarVentanas();
         ventanaGestionUsuario.setVisible(true);
     }//GEN-LAST:event_menuItemGestionUsuarioActionPerformed
+
+    private void menuItemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        cerrarVentanas();
+        menuGestion.setEnabled(false);
+        menuItemCerrarSesion.setEnabled(false);
+        menuItemCrearUsuario.setEnabled(true);
+        menuItemIniciarSesion.setEnabled(true);
+        
+    }//GEN-LAST:event_menuItemCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments

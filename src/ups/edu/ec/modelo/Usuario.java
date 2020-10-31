@@ -87,6 +87,7 @@ public class Usuario {
     public void actualizarTelefono(Telefono telefono){
         var telefonoCambiar = listaTelefonos.stream().filter(t -> t.getCodigo() == telefono.getCodigo()).findFirst().get();
         int index = listaTelefonos.indexOf(telefonoCambiar);
+        listaTelefonos.remove(telefonoCambiar);
         listaTelefonos.add(index, telefono);
     }
     

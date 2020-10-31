@@ -67,11 +67,13 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
 
         btnActualizar.setBackground(new java.awt.Color(0, 0, 255));
         btnActualizar.setText("Actualizar");
+        btnActualizar.setEnabled(false);
 
         btnEliminar.setBackground(new java.awt.Color(255, 0, 0));
         btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
 
-        btnCancelar.setBackground(new java.awt.Color(255, 51, 0));
+        btnCancelar.setBackground(new java.awt.Color(255, 51, 51));
         btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

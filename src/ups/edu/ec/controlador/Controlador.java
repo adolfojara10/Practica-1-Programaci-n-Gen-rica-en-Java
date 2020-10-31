@@ -12,11 +12,50 @@ import ups.edu.ec.modelo.Usuario;
 /**
  *
  * @author Adolfo
- * @param <U>
  * @param <T>
  */
-public class Controlador<U, T> {
+public class Controlador<T> {
 
+    private List<T> listaGenerica;
+
+    public Controlador() {
+        listaGenerica = new ArrayList<>();
+    }
+
+    public void create(T objeto) {
+        listaGenerica.add(objeto);
+        System.out.println(listaGenerica);
+    }
+
+    public Optional<T> read(T objeto) {
+        return (Optional<T>) listaGenerica.stream().filter(obj -> obj.equals(objeto)).findFirst().get();
+    }
+
+    public void update(T objeto) {
+        int index = listaGenerica.indexOf(objeto);
+        listaGenerica.remove(index);
+        listaGenerica.add(index, objeto);
+    }
+
+    public void delete(T objeto) {
+        listaGenerica.remove(objeto);
+    }
+
+    public List<T> findAll() {
+        return listaGenerica;
+    }
+
+    public Usuario iniciarSesion(String correo, String password) {
+        
+        List<Usuario> copiaListaUsuario;
+        copiaListaUsuario = (List<Usuario>) List.copyOf(listaGenerica);
+        
+        return copiaListaUsuario.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();
+        
+        //return (Usuario) listaGenerica.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();  
+    }
+
+    /*
     private List<Usuario> listaUsuarios;
     private List<Telefono> listaTelefonos;
 
@@ -48,9 +87,8 @@ public class Controlador<U, T> {
         return listaUsuarios.stream().filter(u -> u.getCorreo().equals(correo) && u.getPassword().equals(password)).findFirst().get();
     }
 
-    /*
-     * Crud telefono
-     */
+  //
+    
     public void createTelefono(Telefono telefono) {
         listaTelefonos.add(telefono);
     }
@@ -73,7 +111,5 @@ public class Controlador<U, T> {
     public List<Telefono> findAll(){
         return listaTelefonos;
     }
-    
-    
-    
+     */
 }
