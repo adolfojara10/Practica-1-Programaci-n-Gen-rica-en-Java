@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author Adolfo
  */
 public class Telefono {
-    
+
     private int codigo;
     private String tipo;
     private String numero;
@@ -23,6 +23,10 @@ public class Telefono {
         this.tipo = tipo;
         this.numero = numero;
         this.operadora = operadora;
+    }
+
+    public Telefono() {
+
     }
 
     public int getCodigo() {
@@ -84,10 +88,8 @@ public class Telefono {
 
     @Override
     public String toString() {
-        return "Telefono:\n" + "codigo=" + codigo + ", tipo=" + tipo + 
-                ", numero=" + numero + ", operadora=" + operadora;
+        return "Telefono:\n" + "codigo=" + codigo + ", tipo=" + tipo
+                + ", numero=" + numero + ", operadora=" + operadora;
     }
-    
-    
-    
+
 }

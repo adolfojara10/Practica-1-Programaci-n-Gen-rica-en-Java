@@ -31,10 +31,14 @@ public class Controlador<T> {
         return (Optional<T>) listaGenerica.stream().filter(obj -> obj.equals(objeto)).findFirst().get();
     }
 
-    public void update(T objeto) {
-        int index = listaGenerica.indexOf(objeto);
+    public void update(T objeto, T objetoEliminar) {
+
+        int index = (listaGenerica.indexOf(objetoEliminar));
         listaGenerica.remove(index);
         listaGenerica.add(index, objeto);
+        System.out.println("doneeee");
+
+        System.out.println(listaGenerica);
     }
 
     public void delete(T objeto) {
@@ -49,16 +53,22 @@ public class Controlador<T> {
 
         List<Usuario> copiaListaUsuario;
         copiaListaUsuario = (List<Usuario>) List.copyOf(listaGenerica);
-               
+
         return copiaListaUsuario.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();
 
         //return (Usuario) listaGenerica.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();  
-        
     }
 
     public int cargarCodigo() {
-        var copiaListaTelefonos = (List<Telefono>) List.copyOf(listaGenerica);
-        return (copiaListaTelefonos.size() + 1);
+        var copiaListaTelefonos = (List<Telefono>) listaGenerica;
+        if (copiaListaTelefonos.isEmpty()) {
+            return 1;
+        } else {
+            int index = copiaListaTelefonos.size();
+            var ultimoTelefono = copiaListaTelefonos.get(index - 1);
+            return (ultimoTelefono.getCodigo() + 1);
+        }
+
     }
 
     /*

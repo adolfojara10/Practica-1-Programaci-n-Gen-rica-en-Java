@@ -19,58 +19,64 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
 
     private Controlador<Usuario> controladorUsuario;
     private Controlador<Telefono> controladorTelefono;
-    
+
     private Usuario usuario;
-    
+    private Telefono telefono;
+
     /**
      * Creates new form VentanaGestionTelefono
+     *
      * @param controladorUsuario
      * @param controladorTelefono
      */
     public VentanaGestionTelefono(Controlador<Usuario> controladorUsuario, Controlador<Telefono> controladorTelefono) {
         initComponents();
-        
+
         this.controladorTelefono = controladorTelefono;
         this.controladorUsuario = controladorUsuario;
+        telefono = new Telefono();
+        cbxTipo.setSelectedIndex(0);
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-/*
+
+    /*
     public void llenarUsuario(String cedula, String nombre, String apellido, String correo, String password, List<Telefono> listaTelefonos){
         usuario = new Usuario(cedula, nombre, apellido, correo, password, listaTelefonos);
         
     }
-  */  
+     */
     public void limpiar() {
         txtCodigo.setText("");
         txtFormattedNumero.setValue("");
         cbxTipo.setSelectedIndex(0);
         cbxOperadora.setSelectedIndex(0);
+        btnCrear.setEnabled(true);
         btnActualizar.setEnabled(false);
         btnEliminar.setEnabled(false);
         cargarCodigo();
         tblTelefonos.clearSelection();
+        cbxTipo.setEnabled(true);
     }
-    
-    public void cargarCodigo(){
+
+    public void cargarCodigo() {
         txtCodigo.setText(String.valueOf(controladorTelefono.cargarCodigo()));
     }
 
-    public void llenarTablaTelefono(){
+    public void llenarTablaTelefono() {
         DefaultTableModel modeloTabla = (DefaultTableModel) tblTelefonos.getModel();
-        
-        for(Telefono tele : usuario.getListaTelefonos()){
+
+        modeloTabla.setRowCount(0);
+        for (Telefono tele : usuario.getListaTelefonos()) {
             Object[] rowData = {tele.getCodigo(), tele.getNumero(), tele.getTipo(), tele.getOperadora()};
             modeloTabla.addRow(rowData);
         }
-        
+
         tblTelefonos.setModel(modeloTabla);
     }
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -126,6 +132,7 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         jLabel1.setText("Código:");
 
         txtCodigo.setEditable(false);
+        txtCodigo.setBackground(new java.awt.Color(153, 153, 153));
 
         jLabel2.setText("Tipo:");
 
@@ -137,6 +144,8 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setText("Número:");
+
+        txtFormattedNumero.setEditable(false);
 
         jLabel4.setText("Operadora:");
 
@@ -153,10 +162,20 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         btnActualizar.setBackground(new java.awt.Color(0, 0, 255));
         btnActualizar.setText("Actualizar");
         btnActualizar.setEnabled(false);
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setBackground(new java.awt.Color(255, 0, 0));
         btnEliminar.setText("Eliminar");
         btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setBackground(new java.awt.Color(255, 51, 51));
         btnCancelar.setText("Cancelar");
@@ -248,6 +267,11 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblTelefonos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTelefonosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblTelefonos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -298,11 +322,11 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
     private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
         // TODO add your handling code here:
         limpiar();
-        
+
         DefaultTableModel modeloTabla = (DefaultTableModel) tblTelefonos.getModel();
         modeloTabla.setRowCount(0);
         tblTelefonos.setModel(modeloTabla);
-        
+
     }//GEN-LAST:event_formComponentHidden
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
@@ -316,6 +340,7 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         try {
             String item = (String) cbxTipo.getSelectedItem();
             if (item.equals("Casa")) {
+                txtFormattedNumero.setEditable(true);
                 txtFormattedNumero.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
                                 new javax.swing.text.MaskFormatter("(593)#-####-###")
@@ -323,6 +348,7 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
                 );
 
             } else if (item.equals("Celular")) {
+                txtFormattedNumero.setEditable(true);
                 txtFormattedNumero.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
                                 new javax.swing.text.MaskFormatter("(593)###-###-###")
@@ -330,9 +356,11 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
                 );
 
             } else {
+                
+                txtFormattedNumero.setEditable(false);
                 txtFormattedNumero.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
-                                new javax.swing.text.MaskFormatter("(593)#-####-####")
+                                new javax.swing.text.MaskFormatter("seleccione tipo")
                         )
                 );
             }
@@ -340,7 +368,7 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Formato del número del teléfono erroneo");
             ex.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_cbxTipoActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
@@ -350,21 +378,83 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         String tipo = (String) cbxTipo.getSelectedItem();
         String operadora = (String) cbxOperadora.getSelectedItem();
         Telefono tele = new Telefono(codigo, tipo, numero, operadora);
-        
-        if(numero.isEmpty() || tipo.equals("--Seleccione--") || operadora.equals("--Seleccione--"))
+
+        if (numero.isEmpty() || tipo.equals("--Seleccione--") || operadora.equals("--Seleccione--")) {
             JOptionPane.showMessageDialog(this, "Llene todos los campos para crear un teléfono");
-        else{
+        } else {
             controladorTelefono.create(tele);
             usuario.agregarTelefono(tele);
-            controladorUsuario.update(usuario);
+            controladorUsuario.update(usuario, usuario);
             JOptionPane.showMessageDialog(this, "Teléfono creado con exito");
             llenarTablaTelefono();
             limpiar();
-        }       
-        
+        }
+
     }//GEN-LAST:event_btnCrearActionPerformed
 
-    
+    private void tblTelefonosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTelefonosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblTelefonos.getSelectedRow();
+        int codigo = (int) tblTelefonos.getValueAt(fila, 0);
+        String numero = (String) tblTelefonos.getValueAt(fila, 1);
+        String tipo = (String) tblTelefonos.getValueAt(fila, 2);
+        String operadora = (String) tblTelefonos.getValueAt(fila, 3);
+
+        this.telefono = new Telefono(codigo, tipo, numero, operadora);
+        
+        
+        
+        txtCodigo.setText(String.valueOf(codigo));
+        cbxTipo.setSelectedItem(tipo);
+        txtFormattedNumero.setValue(numero);
+        cbxOperadora.setSelectedItem(operadora);
+        
+        cbxTipo.setEnabled(false);
+
+        btnCrear.setEnabled(false);
+        btnActualizar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+
+    }//GEN-LAST:event_tblTelefonosMouseClicked
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        int codigo = Integer.parseInt(txtCodigo.getText());
+        String numero = (String) txtFormattedNumero.getValue();
+        String tipo = (String) cbxTipo.getSelectedItem();
+        String operadora = (String) cbxOperadora.getSelectedItem();
+        Telefono tele = new Telefono(codigo, tipo, numero, operadora);
+
+        if (numero.isEmpty() || tipo.equals("--Seleccione--") || operadora.equals("--Seleccione--"))
+            JOptionPane.showMessageDialog(this, "Llene todos los campos para actualizar un teléfono");
+        else {
+            controladorTelefono.update(tele,telefono);
+            usuario.actualizarTelefono(tele);
+            controladorUsuario.update(usuario, usuario);
+            JOptionPane.showMessageDialog(this, "Teléfono actualizado con exito");
+            llenarTablaTelefono();
+            limpiar();
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int codigo = Integer.parseInt(txtCodigo.getText());
+        String numero = (String) txtFormattedNumero.getValue();
+        String tipo = (String) cbxTipo.getSelectedItem();
+        String operadora = (String) cbxOperadora.getSelectedItem();
+        Telefono tele = new Telefono(codigo, tipo, numero, operadora);
+
+        controladorTelefono.delete(tele);
+        usuario.eliminarTelefono(codigo);
+        controladorUsuario.update(usuario, usuario);
+        JOptionPane.showMessageDialog(this, "Teléfono eliminado con exito");
+        llenarTablaTelefono();
+        limpiar();
+
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
