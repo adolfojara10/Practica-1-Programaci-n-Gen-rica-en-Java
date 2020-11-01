@@ -32,7 +32,7 @@ public class Controlador<T> {
     }
 
     public void update(T objeto, T objetoEliminar) {
-
+        
         int index = (listaGenerica.indexOf(objetoEliminar));
         listaGenerica.remove(index);
         listaGenerica.add(index, objeto);

@@ -5,6 +5,7 @@
  */
 package ups.edu.ec.vista;
 
+import javax.swing.JOptionPane;
 import ups.edu.ec.controlador.Controlador;
 import ups.edu.ec.modelo.Usuario;
 
@@ -15,24 +16,31 @@ import ups.edu.ec.modelo.Usuario;
 public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
 
     private Controlador<Usuario> controladorUsuario;
-    
+
     private Usuario usuario;
-    
+
     /**
      * Creates new form VentanaGestionUsuario
+     *
      * @param controladorUsuario
      */
     public VentanaGestionUsuario(Controlador<Usuario> controladorUsuario) {
         initComponents();
-        
+
         this.controladorUsuario = controladorUsuario;
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
-    
+
+    public void llenarDatos() {
+        txtNombre.setText(usuario.getNombre());
+        txtApellido.setText(usuario.getApellido());
+        txtCedula.setText(usuario.getCedula());
+        txtCorreo.setText(usuario.getCorreo());
+        txtPassword.setText(usuario.getPassword());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,12 +61,30 @@ public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
         txtApellido = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
         txtPassword = new javax.swing.JTextField();
-        txtFormattedCedula = new javax.swing.JFormattedTextField();
         btnActualizar = new javax.swing.JButton();
+        txtCedula = new javax.swing.JTextField();
+        btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Usuario");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jLabel1.setText("Nombre:");
 
@@ -70,40 +96,52 @@ public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Contraseña:");
 
-        txtFormattedCedula.setEditable(false);
-        try {
-            txtFormattedCedula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("0#########")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
         btnActualizar.setBackground(new java.awt.Color(0, 0, 255));
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        txtCedula.setEditable(false);
+        txtCedula.setBackground(new java.awt.Color(102, 102, 102));
+
+        btnCancelar.setBackground(new java.awt.Color(255, 51, 51));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel3))
-                .addGap(108, 108, 108)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtNombre)
-                    .addComponent(txtApellido)
-                    .addComponent(txtCorreo)
-                    .addComponent(txtPassword)
-                    .addComponent(txtFormattedCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(192, Short.MAX_VALUE)
-                .addComponent(btnActualizar)
-                .addGap(183, 183, 183))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3))
+                        .addGap(108, 108, 108)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                            .addComponent(txtApellido)
+                            .addComponent(txtCorreo)
+                            .addComponent(txtPassword)
+                            .addComponent(txtCedula)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(109, 109, 109)
+                        .addComponent(btnActualizar)
+                        .addGap(46, 46, 46)
+                        .addComponent(btnCancelar)))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,7 +157,7 @@ public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtFormattedCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -129,7 +167,9 @@ public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnActualizar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnCancelar))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -153,9 +193,40 @@ public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        // TODO add your handling code here:
+        llenarDatos();
+    }//GEN-LAST:event_formInternalFrameActivated
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        llenarDatos();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        String nombre = txtNombre.getText();
+        String apellido = txtApellido.getText();
+        String correo = txtCorreo.getText();
+        String password = txtPassword.getText();
+
+        if (nombre.isBlank() || apellido.isBlank() || correo.isBlank() || password.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Todas las casillas deben estar llenas");
+        } else {
+            var usuarioNuevo = new Usuario(txtCedula.getText(), nombre, apellido, correo, password, usuario.getListaTelefonos());
+            this.usuario = usuarioNuevo;
+            controladorUsuario.update(usuarioNuevo, usuario);
+            llenarDatos();
+            JOptionPane.showMessageDialog(this, "Información actualizada con exito");
+        }
+
+
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -163,8 +234,8 @@ public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCorreo;
-    private javax.swing.JFormattedTextField txtFormattedCedula;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPassword;
     // End of variables declaration//GEN-END:variables
