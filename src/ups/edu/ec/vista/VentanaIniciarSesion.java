@@ -16,24 +16,35 @@ import ups.edu.ec.modelo.Usuario;
 public class VentanaIniciarSesion extends javax.swing.JInternalFrame {
 
     private Controlador<Usuario> controladorUsuario;
+
     private VentanaPrincipal ventanaPrincipal;
+    private VentanaGestionTelefono ventanaGestionTelefono;
+    private VentanaGestionUsuario ventanaGestionUsuario;
 
     /**
      * Creates new form VentanaIniciarSesion
      *
      * @param controladorUsuario
+     * @param ventanaPrincipal
+     * @param ventanaGestionTelefono
+     * @param ventanaGestionUsuario
      */
-    public VentanaIniciarSesion(Controlador<Usuario> controladorUsuario, VentanaPrincipal ventanaPrincipal) {
+    public VentanaIniciarSesion(Controlador<Usuario> controladorUsuario, VentanaPrincipal ventanaPrincipal,
+            VentanaGestionTelefono ventanaGestionTelefono, VentanaGestionUsuario ventanaGestionUsuario) {
         initComponents();
 
         this.controladorUsuario = controladorUsuario;
         this.ventanaPrincipal = ventanaPrincipal;
+        this.ventanaGestionTelefono = ventanaGestionTelefono;
+        this.ventanaGestionUsuario = ventanaGestionUsuario;
+
     }
 
-    public void limpiar(){
+    public void limpiar() {
         txtCorreo.setText("");
         txtPassword.setText("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -158,17 +169,22 @@ public class VentanaIniciarSesion extends javax.swing.JInternalFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
-        var usuarioEncontrado = controladorUsuario.iniciarSesion(txtCorreo.getText(), String.valueOf(txtPassword.getPassword()));
-
+        Usuario usuarioEncontrado = controladorUsuario.iniciarSesion(txtCorreo.getText(), String.valueOf(txtPassword.getPassword()));
+        System.out.println(usuarioEncontrado);
         if (usuarioEncontrado != null) {
             JOptionPane.showMessageDialog(this, "Sesión iniciada con exito");
+            ventanaGestionTelefono.setUsuario(usuarioEncontrado);
+            ventanaGestionUsuario.setUsuario(usuarioEncontrado);
+            /*ventanaGestionTelefono.llenarUsuario(usuarioEncontrado.getCedula(), usuarioEncontrado.getNombre(),
+                    usuarioEncontrado.getApellido(), usuarioEncontrado.getCorreo(), usuarioEncontrado.getPassword(),
+                    usuarioEncontrado.getListaTelefonos());*/
             ventanaPrincipal.getMenuGestion().setEnabled(true);
             ventanaPrincipal.getMenuItemCerrarSesion().setEnabled(true);
             ventanaPrincipal.getMenuItemCrearUsuario().setEnabled(false);
             ventanaPrincipal.getMenuItemIniciarSesion().setEnabled(false);
             limpiar();
             this.hide();
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Usuario no encontrado");
         }
@@ -190,7 +206,6 @@ public class VentanaIniciarSesion extends javax.swing.JInternalFrame {
         limpiar();
     }//GEN-LAST:event_formComponentHidden
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

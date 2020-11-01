@@ -46,13 +46,19 @@ public class Controlador<T> {
     }
 
     public Usuario iniciarSesion(String correo, String password) {
-        
+
         List<Usuario> copiaListaUsuario;
         copiaListaUsuario = (List<Usuario>) List.copyOf(listaGenerica);
-        
+               
         return copiaListaUsuario.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();
-        
+
         //return (Usuario) listaGenerica.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();  
+        
+    }
+
+    public int cargarCodigo() {
+        var copiaListaTelefonos = (List<Telefono>) List.copyOf(listaGenerica);
+        return (copiaListaTelefonos.size() + 1);
     }
 
     /*

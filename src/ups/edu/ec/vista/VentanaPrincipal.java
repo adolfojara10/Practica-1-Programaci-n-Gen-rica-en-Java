@@ -22,7 +22,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private VentanaRegistroTelefonos ventanaRegistroTelefonos;
     private VentanaGestionTelefono ventanaGestionTelefono;
     private VentanaGestionUsuario ventanaGestionUsuario;
-    
+
     private Controlador<Usuario> controladorUsuario;
     private Controlador<Telefono> controladorTelefono;
 
@@ -31,23 +31,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
-        
+
         controladorUsuario = new Controlador<>();
         controladorTelefono = new Controlador<>();
-        
+
+        ventanaGestionTelefono = new VentanaGestionTelefono(controladorUsuario, controladorTelefono);
+        ventanaGestionUsuario = new VentanaGestionUsuario(controladorUsuario);
         ventanaRegistrarUsuario = new VentanaRegistrarUsuario(controladorUsuario);
-        ventanaIniciarSesion = new VentanaIniciarSesion(controladorUsuario, this);
+        ventanaIniciarSesion = new VentanaIniciarSesion(controladorUsuario, this, 
+                ventanaGestionTelefono, ventanaGestionUsuario);
         ventanaRegistroTelefonos = new VentanaRegistroTelefonos();
-        ventanaGestionTelefono = new VentanaGestionTelefono();
-        ventanaGestionUsuario = new VentanaGestionUsuario();
         
-        
+
         desktopPane.add(ventanaRegistrarUsuario);
         desktopPane.add(ventanaIniciarSesion);
         desktopPane.add(ventanaRegistroTelefonos);
         desktopPane.add(ventanaGestionTelefono);
         desktopPane.add(ventanaGestionUsuario);
-               
 
         this.setExtendedState(VentanaPrincipal.MAXIMIZED_BOTH);
     }
@@ -68,14 +68,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         return menuItemIniciarSesion;
     }
 
-    
     public void cerrarVentanas() {
         ventanaRegistrarUsuario.setVisible(false);
         ventanaIniciarSesion.setVisible(false);
         ventanaRegistroTelefonos.setVisible(false);
         ventanaGestionTelefono.setVisible(false);
         ventanaGestionUsuario.setVisible(false);
-        
+
     }
 
     /**
@@ -233,7 +232,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuItemCerrarSesion.setEnabled(false);
         menuItemCrearUsuario.setEnabled(true);
         menuItemIniciarSesion.setEnabled(true);
-        
+
     }//GEN-LAST:event_menuItemCerrarSesionActionPerformed
 
     /**

@@ -32,6 +32,17 @@ public class Usuario {
         listaTelefonos = new ArrayList<>();
     }
 
+    public Usuario(String cedula, String nombre, String apellido, String correo, String password, List<Telefono> listaTelefonos) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.password = password;
+        this.listaTelefonos = listaTelefonos;
+    }
+    
+    
+
     public String getCedula() {
         return cedula;
     }

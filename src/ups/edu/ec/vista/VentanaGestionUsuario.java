@@ -5,18 +5,34 @@
  */
 package ups.edu.ec.vista;
 
+import ups.edu.ec.controlador.Controlador;
+import ups.edu.ec.modelo.Usuario;
+
 /**
  *
  * @author Adolfo
  */
 public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
 
+    private Controlador<Usuario> controladorUsuario;
+    
+    private Usuario usuario;
+    
     /**
      * Creates new form VentanaGestionUsuario
+     * @param controladorUsuario
      */
-    public VentanaGestionUsuario() {
+    public VentanaGestionUsuario(Controlador<Usuario> controladorUsuario) {
         initComponents();
+        
+        this.controladorUsuario = controladorUsuario;
     }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

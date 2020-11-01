@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="defaultCloseOperation" type="int" value="1"/>
@@ -9,6 +9,10 @@
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameActivated" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="formInternalFrameActivated"/>
+    <EventHandler event="componentHidden" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="formComponentHidden"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -142,12 +146,16 @@
         <Component class="javax.swing.JComboBox" name="cbxTipo">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="Celular"/>
-                <StringItem index="1" value="Casa"/>
+              <StringArray count="3">
+                <StringItem index="0" value="--Seleccione--"/>
+                <StringItem index="1" value="Celular"/>
+                <StringItem index="2" value="Casa"/>
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxTipoActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -167,12 +175,13 @@
         <Component class="javax.swing.JComboBox" name="cbxOperadora">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Movistar"/>
-                <StringItem index="1" value="Claro"/>
-                <StringItem index="2" value="Tuenti"/>
-                <StringItem index="3" value="CNT"/>
-                <StringItem index="4" value="Etapa"/>
+              <StringArray count="6">
+                <StringItem index="0" value="--Seleccione--"/>
+                <StringItem index="1" value="Movistar"/>
+                <StringItem index="2" value="Claro"/>
+                <StringItem index="3" value="Tuenti"/>
+                <StringItem index="4" value="CNT"/>
+                <StringItem index="5" value="Etapa"/>
               </StringArray>
             </Property>
           </Properties>
@@ -187,6 +196,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Crear"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrearActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnActualizar">
           <Properties>
@@ -213,6 +225,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
