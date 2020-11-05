@@ -52,8 +52,25 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
 
     }
 
+    public void limpiarDatos() {
+        //txtFormattedBusqueda.setValue("");
+        //txtBusquedaApellido.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCedula.setText("");
+        txtCorreo.setText("");
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblTelefonos.getModel();
+        modeloTabla.setRowCount(0);
+        tblTelefonos.setModel(modeloTabla);
+
+        btnBuscar.setEnabled(false);
+        btnListarTodos.setEnabled(true);
+    }
+
     public void formatearOpcion() {
         txtFormattedBusqueda.setEditable(true);
+        txtFormattedBusqueda.setValue("");
         //txtFormattedBusqueda.setVisible(true);
         txtFormattedBusqueda.setEnabled(true);
         txtFormattedBusqueda.setBackground(Color.white);
@@ -61,7 +78,7 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
         btnListarTodos.setEnabled(false);
         btnBuscar.setEnabled(true);
         txtBusquedaApellido.setEnabled(false);
-        
+
     }
 
     public void llenarTablaTelefonos(List<Telefono> listaTelefonos) {
@@ -112,7 +129,7 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Seleccione el método de busqueda:");
 
-        cbxOpcionBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccione--", "Apellido", "Número de celular", "Número fijo" }));
+        cbxOpcionBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccione--", "Apellido", "Cédula", "Número de celular", "Número fijo" }));
         cbxOpcionBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxOpcionBusquedaActionPerformed(evt);
@@ -360,6 +377,16 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
                                 new javax.swing.text.MaskFormatter("(593)0#-####-###")
                         )
                 );
+
+            } else if (item.equals("Cédula")) {
+                formatearOpcion();
+
+                txtBusquedaApellido.setText("");
+                txtFormattedBusqueda.setFormatterFactory(
+                        new javax.swing.text.DefaultFormatterFactory(
+                                new javax.swing.text.MaskFormatter("0#########")
+                        )
+                );
             } else {
                 txtBusquedaApellido.setText("");
                 txtFormattedBusqueda.setEditable(false);
@@ -418,10 +445,36 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
                 txtCedula.setText(usuario.getCedula());
                 txtCorreo.setText(usuario.getCorreo());
 
-                llenarTablaTelefonos(usuario.getListaTelefonos());
+                if (!usuario.getListaTelefonos().isEmpty()) {
+                    llenarTablaTelefonos(usuario.getListaTelefonos());
+                } else {
+                    JOptionPane.showMessageDialog(this, "El usuario no contiene teléfonos");
+                }
+            } else {
+                limpiarDatos();
+                JOptionPane.showMessageDialog(this, "Usuario no encontrado");
+            }
+
+        } else if (itemSeleccionado.equalsIgnoreCase("Cédula")) {
+            String busquedaTexto = String.valueOf(txtFormattedBusqueda.getValue());
+            System.out.println(busquedaTexto);
+
+            var usuario = controladorUsuario.readCedula(busquedaTexto);
+            if (usuario != null) {
+
+                txtNombre.setText(usuario.getNombre());
+                txtApellido.setText(busquedaTexto);
+                txtCedula.setText(usuario.getCedula());
+                txtCorreo.setText(usuario.getCorreo());
+
+                if (!usuario.getListaTelefonos().isEmpty()) {
+                    llenarTablaTelefonos(usuario.getListaTelefonos());
+                } else {
+                    JOptionPane.showMessageDialog(this, "El usuario no contiene teléfonos");
+                }
 
             } else {
-
+                limpiarDatos();
                 JOptionPane.showMessageDialog(this, "Usuario no encontrado");
             }
 
@@ -447,6 +500,7 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
 
                 }
             } else {
+                limpiarDatos();
                 JOptionPane.showMessageDialog(this, "Teléfono no encontrado");
             }
         }

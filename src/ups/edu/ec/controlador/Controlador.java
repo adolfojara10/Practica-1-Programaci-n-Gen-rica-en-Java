@@ -54,7 +54,8 @@ public class Controlador<T> {
         List<Usuario> copiaListaUsuario;
         copiaListaUsuario = (List<Usuario>) List.copyOf(listaGenerica);
 
-        return copiaListaUsuario.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();
+        return copiaListaUsuario.stream().filter(usu -> usu.getCorreo().equals(correo)
+                && usu.getPassword().equals(password)).findFirst().get();
 
         //return (Usuario) listaGenerica.stream().filter(tele -> tele.getCorreo().equals(correo) && tele.getPassword().equals(password)).findFirst().get();  
     }
@@ -84,6 +85,13 @@ public class Controlador<T> {
         return null;
     }
 
+    public Usuario readCedula(String cedula) {
+        var copiaListaUsuarios = (List<Usuario>) List.copyOf(listaGenerica);
+        
+        return copiaListaUsuarios.stream().filter(usuario -> usuario.getCedula().equals(cedula)).findFirst().get();
+        
+    }
+
     public Usuario readNumero(Telefono telefono) {
         var copiaListaUsuario = (List<Usuario>) List.copyOf(listaGenerica);
 
@@ -101,7 +109,7 @@ public class Controlador<T> {
 
     public Telefono readTelefono(String numero) {
         var copiaListaTelefono = (List<Telefono>) List.copyOf(listaGenerica);
-        
+
         for (Telefono tele : copiaListaTelefono) {
             if (tele.getNumero().equals(numero.trim())) {
                 System.out.println(tele.toString());
