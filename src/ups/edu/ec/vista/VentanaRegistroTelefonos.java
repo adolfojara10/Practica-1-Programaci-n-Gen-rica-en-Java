@@ -5,7 +5,13 @@
  */
 package ups.edu.ec.vista;
 
+import java.awt.Color;
+import java.util.List;
+import java.util.Optional;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import ups.edu.ec.controlador.Controlador;
+import ups.edu.ec.modelo.*;
 
 /**
  *
@@ -13,11 +19,61 @@ import javax.swing.JOptionPane;
  */
 public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
 
+    private Controlador<Usuario> controladorUsuario;
+    private Controlador<Telefono> controladorTelefono;
+
     /**
      * Creates new form VentanaRegistroTelefonos
      */
-    public VentanaRegistroTelefonos() {
+    public VentanaRegistroTelefonos(Controlador<Usuario> controladorUsuario, Controlador<Telefono> controladorTelefono) {
         initComponents();
+        cbxOpcionBusqueda.setSelectedIndex(0);
+
+        this.controladorUsuario = controladorUsuario;
+        this.controladorTelefono = controladorTelefono;
+
+    }
+
+    public void limpiar() {
+        cbxOpcionBusqueda.setSelectedIndex(0);
+        txtFormattedBusqueda.setValue("");
+        txtBusquedaApellido.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCedula.setText("");
+        txtCorreo.setText("");
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblTelefonos.getModel();
+        modeloTabla.setRowCount(0);
+        tblTelefonos.setModel(modeloTabla);
+
+        btnBuscar.setEnabled(false);
+        btnListarTodos.setEnabled(true);
+
+    }
+
+    public void formatearOpcion() {
+        txtFormattedBusqueda.setEditable(true);
+        //txtFormattedBusqueda.setVisible(true);
+        txtFormattedBusqueda.setEnabled(true);
+        txtFormattedBusqueda.setBackground(Color.white);
+        //txtFormattedBusqueda.setColumns(50);
+        btnListarTodos.setEnabled(false);
+        btnBuscar.setEnabled(true);
+        txtBusquedaApellido.setEnabled(false);
+        
+    }
+
+    public void llenarTablaTelefonos(List<Telefono> listaTelefonos) {
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblTelefonos.getModel();
+        modeloTabla.setRowCount(0);
+
+        for (Telefono tele : listaTelefonos) {
+            Object[] rowData = {tele.getCodigo(), tele.getNumero(), tele.getTipo(), tele.getOperadora()};
+            modeloTabla.addRow(rowData);
+        }
+
+        tblTelefonos.setModel(modeloTabla);
     }
 
     /**
@@ -35,6 +91,8 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
         btnBuscar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         txtFormattedBusqueda = new javax.swing.JFormattedTextField();
+        btnListarTodos = new javax.swing.JButton();
+        txtBusquedaApellido = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
@@ -54,7 +112,7 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Seleccione el método de busqueda:");
 
-        cbxOpcionBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Apellido", "Número de celular", "Número fijo" }));
+        cbxOpcionBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccione--", "Apellido", "Número de celular", "Número fijo" }));
         cbxOpcionBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxOpcionBusquedaActionPerformed(evt);
@@ -63,9 +121,39 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
 
         btnBuscar.setBackground(new java.awt.Color(51, 51, 255));
         btnBuscar.setText("Buscar");
+        btnBuscar.setEnabled(false);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setBackground(new java.awt.Color(255, 0, 0));
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        txtFormattedBusqueda.setEditable(false);
+        txtFormattedBusqueda.setEnabled(false);
+        txtFormattedBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFormattedBusquedaActionPerformed(evt);
+            }
+        });
+
+        btnListarTodos.setBackground(new java.awt.Color(51, 51, 255));
+        btnListarTodos.setText("Listar todos los Teléfonos");
+        btnListarTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarTodosActionPerformed(evt);
+            }
+        });
+
+        txtBusquedaApellido.setEditable(false);
+        txtBusquedaApellido.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -73,33 +161,41 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(38, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(cbxOpcionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnListarTodos))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
                         .addComponent(btnBuscar)
-                        .addGap(43, 43, 43))
+                        .addGap(34, 34, 34)
+                        .addComponent(btnCancelar)
+                        .addGap(124, 124, 124))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(cbxOpcionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(69, 69, 69)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCancelar)
-                    .addComponent(txtFormattedBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtFormattedBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                            .addComponent(txtBusquedaApellido))
+                        .addGap(24, 24, 24))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(2, 2, 2)
+                .addComponent(txtFormattedBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxOpcionBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFormattedBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBusquedaApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscar)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnListarTodos))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -223,7 +319,7 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -234,23 +330,49 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
         try {
             String item = (String) cbxOpcionBusqueda.getSelectedItem();
             if (item.equals("Apellido")) {
-                txtFormattedBusqueda.setFormatterFactory(
+                txtBusquedaApellido.setEnabled(true);
+                txtBusquedaApellido.setEditable(true);
+                //txtBusquedaApellido.setVisible(true);
+                //txtBusquedaApellido.setColumns(50);
+                txtFormattedBusqueda.setEnabled(false);
+                btnListarTodos.setEnabled(false);
+                btnBuscar.setEnabled(true);
+                /*txtFormattedBusqueda.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
-                                new javax.swing.text.MaskFormatter("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                                new javax.swing.text.MaskFormatter("??????????????????????????")
                         )
-                );
+                );*/
 
             } else if (item.equals("Número de celular")) {
+                formatearOpcion();
+                txtBusquedaApellido.setText("");
                 txtFormattedBusqueda.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
                                 new javax.swing.text.MaskFormatter("(593)0##-###-####")
                         )
                 );
 
-            } else if (item.equals("Número fijo")){
+            } else if (item.equals("Número fijo")) {
+                formatearOpcion();
+                txtBusquedaApellido.setText("");
                 txtFormattedBusqueda.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
                                 new javax.swing.text.MaskFormatter("(593)0#-####-###")
+                        )
+                );
+            } else {
+                txtBusquedaApellido.setText("");
+                txtFormattedBusqueda.setEditable(false);
+                txtFormattedBusqueda.setEnabled(false);
+                txtBusquedaApellido.setEditable(false);
+                txtBusquedaApellido.setEnabled(false);
+                txtFormattedBusqueda.setBackground(Color.DARK_GRAY);
+                btnBuscar.setEnabled(false);
+                btnListarTodos.setEnabled(true);
+
+                txtFormattedBusqueda.setFormatterFactory(
+                        new javax.swing.text.DefaultFormatterFactory(
+                                new javax.swing.text.MaskFormatter("")
                         )
                 );
             }
@@ -260,10 +382,86 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cbxOpcionBusquedaActionPerformed
 
+    private void btnListarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarTodosActionPerformed
+        // TODO add your handling code here:
+        var listaTelefono = (List<Telefono>) controladorTelefono.findAll();
+
+        if (listaTelefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No existen teléfonos");
+        } else {
+            llenarTablaTelefonos(listaTelefono);
+        }
+
+
+    }//GEN-LAST:event_btnListarTodosActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+    /**
+     *
+     * @param evt
+     */
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        String itemSeleccionado = (String) cbxOpcionBusqueda.getSelectedItem();
+
+        if (itemSeleccionado.equalsIgnoreCase("Apellido")) {
+            String busquedaTexto = txtBusquedaApellido.getText();
+            System.out.println(busquedaTexto);
+            Usuario usuario = controladorUsuario.readApellido(busquedaTexto.trim());
+            if (usuario != null) {
+
+                txtNombre.setText(usuario.getNombre());
+                txtApellido.setText(busquedaTexto);
+                txtCedula.setText(usuario.getCedula());
+                txtCorreo.setText(usuario.getCorreo());
+
+                llenarTablaTelefonos(usuario.getListaTelefonos());
+
+            } else {
+
+                JOptionPane.showMessageDialog(this, "Usuario no encontrado");
+            }
+
+        } else {
+            String busquedaTexto = String.valueOf(txtFormattedBusqueda.getValue());
+            System.out.println(busquedaTexto);
+
+            var telefono = controladorTelefono.readTelefono(busquedaTexto);
+            if (telefono != null) {
+
+                var usuario = controladorUsuario.readNumero(telefono);
+                if (usuario != null) {
+                    txtNombre.setText(usuario.getNombre());
+                    txtApellido.setText(usuario.getApellido());
+                    txtCedula.setText(usuario.getCedula());
+                    txtCorreo.setText(usuario.getCorreo());
+
+                    DefaultTableModel modeloTabla = (DefaultTableModel) tblTelefonos.getModel();
+                    modeloTabla.setRowCount(0);
+                    Object[] rowData = {telefono.getCodigo(), telefono.getNumero(), telefono.getTipo(), telefono.getOperadora()};
+                    modeloTabla.addRow(rowData);
+                    tblTelefonos.setModel(modeloTabla);
+
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Teléfono no encontrado");
+            }
+        }
+
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtFormattedBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFormattedBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFormattedBusquedaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnListarTodos;
     private javax.swing.JComboBox<String> cbxOpcionBusqueda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -276,6 +474,7 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblTelefonos;
     private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtBusquedaApellido;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JFormattedTextField txtFormattedBusqueda;

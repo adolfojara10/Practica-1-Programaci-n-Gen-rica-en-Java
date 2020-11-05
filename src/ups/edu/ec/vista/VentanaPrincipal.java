@@ -40,7 +40,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ventanaRegistrarUsuario = new VentanaRegistrarUsuario(controladorUsuario);
         ventanaIniciarSesion = new VentanaIniciarSesion(controladorUsuario, this, 
                 ventanaGestionTelefono, ventanaGestionUsuario);
-        ventanaRegistroTelefonos = new VentanaRegistroTelefonos();
+        ventanaRegistroTelefonos = new VentanaRegistroTelefonos(controladorUsuario, controladorTelefono);
         
 
         desktopPane.add(ventanaRegistrarUsuario);

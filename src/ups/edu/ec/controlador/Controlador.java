@@ -27,12 +27,12 @@ public class Controlador<T> {
         System.out.println(listaGenerica);
     }
 
-    public Optional<T> read(T objeto) {
-        return (Optional<T>) listaGenerica.stream().filter(obj -> obj.equals(objeto)).findFirst().get();
+    public T read(T objeto) {
+        return listaGenerica.stream().filter(obj -> obj.equals(objeto)).findFirst().get();
     }
 
     public void update(T objeto, T objetoEliminar) {
-        
+
         int index = (listaGenerica.indexOf(objetoEliminar));
         listaGenerica.remove(index);
         listaGenerica.add(index, objeto);
@@ -56,7 +56,7 @@ public class Controlador<T> {
 
         return copiaListaUsuario.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();
 
-        //return (Usuario) listaGenerica.stream().filter(usu -> usu.getCorreo().equals(correo) && usu.getPassword().equals(password)).findFirst().get();  
+        //return (Usuario) listaGenerica.stream().filter(tele -> tele.getCorreo().equals(correo) && tele.getPassword().equals(password)).findFirst().get();  
     }
 
     public int cargarCodigo() {
@@ -71,6 +71,45 @@ public class Controlador<T> {
 
     }
 
+    public Usuario readApellido(String apellidoBusqueda) {
+        var copiaListaUsuarios = (List<Usuario>) List.copyOf(listaGenerica);
+//        return copiaListaUsuarios.stream().filter(usuario -> usuario.getApellido().equalsIgnoreCase(apellidoBusqueda.trim())).findFirst().get();
+
+        for (Usuario usu : copiaListaUsuarios) {
+            if (usu.getApellido().trim().equalsIgnoreCase(apellidoBusqueda.trim())) {
+                System.out.println(usu.toString());
+                return usu;
+            }
+        }
+        return null;
+    }
+
+    public Usuario readNumero(Telefono telefono) {
+        var copiaListaUsuario = (List<Usuario>) List.copyOf(listaGenerica);
+
+        for (Usuario usu : copiaListaUsuario) {
+            var copiaListaTelefonoUsuario = (List<Telefono>) List.copyOf(usu.getListaTelefonos());
+            for (Telefono tele : copiaListaTelefonoUsuario) {
+                if (tele.equals(telefono)) {
+                    return usu;
+                }
+            }
+        }
+        return null;
+
+    }
+
+    public Telefono readTelefono(String numero) {
+        var copiaListaTelefono = (List<Telefono>) List.copyOf(listaGenerica);
+        
+        for (Telefono tele : copiaListaTelefono) {
+            if (tele.getNumero().equals(numero.trim())) {
+                System.out.println(tele.toString());
+                return tele;
+            }
+        }
+        return null;
+    }
     /*
     private List<Usuario> listaUsuarios;
     private List<Telefono> listaTelefonos;
@@ -95,7 +134,7 @@ public class Controlador<T> {
     }
 
     public void deleteUsuario(String cedula) {
-        var usuarioDelete = listaUsuarios.stream().filter(usu -> usu.getCedula().equals(cedula)).findFirst().get();
+        var usuarioDelete = listaUsuarios.stream().filter(tele -> tele.getCedula().equals(cedula)).findFirst().get();
         listaUsuarios.remove(usuarioDelete);
     }
 

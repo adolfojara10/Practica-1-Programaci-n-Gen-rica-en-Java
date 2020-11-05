@@ -16,17 +16,19 @@ import ups.edu.ec.modelo.Usuario;
 public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
 
     private Controlador<Usuario> controladorUsuario;
+
     /**
      * Creates new form VentanaRegistrarUsuario
+     *
      * @param controladorUsuario
      */
     public VentanaRegistrarUsuario(Controlador<Usuario> controladorUsuario) {
         initComponents();
-        
+
         this.controladorUsuario = controladorUsuario;
     }
-   
-    public void limpiar(){
+
+    public void limpiar() {
         txtFormattedCedula.setValue("");
         txtNombre.setText("");
         txtApellido.setText("");
@@ -195,13 +197,23 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         // TODO add your handling code here:
-        
-        controladorUsuario.create(new Usuario((String)txtFormattedCedula.getValue(), 
-                txtNombre.getText(), txtApellido.getText(), txtCorreo.getText(), 
-                String.valueOf(txtPassword.getPassword())));
-        JOptionPane.showMessageDialog(this, "Usuario registrado con exito");
-        
-        this.hide();
+        String cedula = (String) txtFormattedCedula.getValue();
+        String nombre = txtNombre.getText();
+        String apellido = txtApellido.getText();
+        String correo = txtCorreo.getText();
+        String password = String.valueOf(txtPassword.getPassword());
+
+        if (cedula.length() != 10 || nombre.isBlank() || apellido.isBlank() || correo.isBlank() || password.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Llene todas las casillas para crear un nuevo Usuario");
+        } else {
+            controladorUsuario.create(new Usuario((String) txtFormattedCedula.getValue(),
+                    txtNombre.getText(), txtApellido.getText(), txtCorreo.getText(),
+                    String.valueOf(txtPassword.getPassword())));
+            JOptionPane.showMessageDialog(this, "Usuario registrado con exito");
+            this.hide();
+        }
+
+
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -224,7 +236,6 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
         limpiar();
     }//GEN-LAST:event_formInternalFrameActivated
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

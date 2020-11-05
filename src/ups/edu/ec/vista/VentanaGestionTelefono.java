@@ -343,7 +343,7 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
                 txtFormattedNumero.setEditable(true);
                 txtFormattedNumero.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
-                                new javax.swing.text.MaskFormatter("(593)#-####-###")
+                                new javax.swing.text.MaskFormatter("(593)0#-####-###")
                         )
                 );
 
@@ -351,12 +351,12 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
                 txtFormattedNumero.setEditable(true);
                 txtFormattedNumero.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
-                                new javax.swing.text.MaskFormatter("(593)###-###-###")
+                                new javax.swing.text.MaskFormatter("(593)0##-###-####")
                         )
                 );
 
             } else {
-                
+
                 txtFormattedNumero.setEditable(false);
                 txtFormattedNumero.setFormatterFactory(
                         new javax.swing.text.DefaultFormatterFactory(
@@ -401,14 +401,12 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         String operadora = (String) tblTelefonos.getValueAt(fila, 3);
 
         this.telefono = new Telefono(codigo, tipo, numero, operadora);
-        
-        
-        
+
         txtCodigo.setText(String.valueOf(codigo));
         cbxTipo.setSelectedItem(tipo);
         txtFormattedNumero.setValue(numero);
         cbxOperadora.setSelectedItem(operadora);
-        
+
         cbxTipo.setEnabled(false);
 
         btnCrear.setEnabled(false);
@@ -428,7 +426,7 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         if (numero.isEmpty() || tipo.equals("--Seleccione--") || operadora.equals("--Seleccione--"))
             JOptionPane.showMessageDialog(this, "Llene todos los campos para actualizar un teléfono");
         else {
-            controladorTelefono.update(tele,telefono);
+            controladorTelefono.update(tele, telefono);
             usuario.actualizarTelefono(tele);
             controladorUsuario.update(usuario, usuario);
             JOptionPane.showMessageDialog(this, "Teléfono actualizado con exito");
