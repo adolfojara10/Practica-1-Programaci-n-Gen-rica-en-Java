@@ -198,8 +198,8 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         // TODO add your handling code here:
         String cedula = (String) txtFormattedCedula.getValue();
-        String nombre = txtNombre.getText();
-        String apellido = txtApellido.getText();
+        String nombre = txtNombre.getText().trim();
+        String apellido = txtApellido.getText().trim();
         String correo = txtCorreo.getText();
         String password = String.valueOf(txtPassword.getPassword());
 

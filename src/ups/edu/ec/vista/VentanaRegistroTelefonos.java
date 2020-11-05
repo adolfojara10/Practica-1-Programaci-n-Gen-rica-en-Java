@@ -437,7 +437,8 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
         if (itemSeleccionado.equalsIgnoreCase("Apellido")) {
             String busquedaTexto = txtBusquedaApellido.getText();
             System.out.println(busquedaTexto);
-            Usuario usuario = controladorUsuario.readApellido(busquedaTexto.trim());
+            Usuario usuario = new Usuario(busquedaTexto.trim());
+            usuario = controladorUsuario.read((Object)usuario);
             if (usuario != null) {
 
                 txtNombre.setText(usuario.getNombre());
@@ -451,19 +452,20 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(this, "El usuario no contiene teléfonos");
                 }
             } else {
-                limpiarDatos();
+                //limpiarDatos();
                 JOptionPane.showMessageDialog(this, "Usuario no encontrado");
             }
 
         } else if (itemSeleccionado.equalsIgnoreCase("Cédula")) {
             String busquedaTexto = String.valueOf(txtFormattedBusqueda.getValue());
             System.out.println(busquedaTexto);
-
-            var usuario = controladorUsuario.readCedula(busquedaTexto);
+            Usuario usuario = new Usuario();
+            usuario.setCedula(busquedaTexto.trim());
+            usuario = controladorUsuario.read((Object)usuario);
             if (usuario != null) {
 
                 txtNombre.setText(usuario.getNombre());
-                txtApellido.setText(busquedaTexto);
+                txtApellido.setText(usuario.getApellido());
                 txtCedula.setText(usuario.getCedula());
                 txtCorreo.setText(usuario.getCorreo());
 
@@ -474,17 +476,18 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
                 }
 
             } else {
-                limpiarDatos();
+                //limpiarDatos();
                 JOptionPane.showMessageDialog(this, "Usuario no encontrado");
             }
 
         } else {
             String busquedaTexto = String.valueOf(txtFormattedBusqueda.getValue());
             System.out.println(busquedaTexto);
-
-            var telefono = controladorTelefono.readTelefono(busquedaTexto);
+            Telefono telefono = new Telefono(busquedaTexto.trim());
+            telefono = controladorTelefono.read(telefono);
             if (telefono != null) {
-
+                telefono.toString();
+                
                 var usuario = controladorUsuario.readNumero(telefono);
                 if (usuario != null) {
                     txtNombre.setText(usuario.getNombre());
@@ -500,7 +503,7 @@ public class VentanaRegistroTelefonos extends javax.swing.JInternalFrame {
 
                 }
             } else {
-                limpiarDatos();
+                //limpiarDatos();
                 JOptionPane.showMessageDialog(this, "Teléfono no encontrado");
             }
         }

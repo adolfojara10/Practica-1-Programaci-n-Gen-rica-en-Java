@@ -29,6 +29,12 @@ public class Telefono {
 
     }
 
+    public Telefono(String numero) {
+        this.numero = numero;
+    }
+    
+    
+
     public int getCodigo() {
         return codigo;
     }

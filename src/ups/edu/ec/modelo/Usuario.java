@@ -40,8 +40,14 @@ public class Usuario {
         this.password = password;
         this.listaTelefonos = listaTelefonos;
     }
-    
-    
+
+    public Usuario(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public Usuario() {
+        
+    }
 
     public String getCedula() {
         return cedula;
@@ -109,8 +115,8 @@ public class Usuario {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.cedula);
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.apellido);
         return hash;
     }
 
@@ -126,11 +132,14 @@ public class Usuario {
             return false;
         }
         final Usuario other = (Usuario) obj;
-        if (!Objects.equals(this.cedula, other.cedula)) {
+        if (!Objects.equals(this.apellido, other.apellido)) {
             return false;
         }
         return true;
     }
+
+    
+    
 
     @Override
     public String toString() {
