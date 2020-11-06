@@ -32,20 +32,27 @@ public class Controlador<T> {
         
         if(parametroBusqueda.getClass().getName().equalsIgnoreCase("ups.edu.ec.modelo.Usuario")){
             var copiaListaUsuario = (List<Usuario>) listaGenerica;
-            for(var usuario:copiaListaUsuario){
-                var usu = (Usuario) parametroBusqueda;
+            
+            var usu = (Usuario) parametroBusqueda;
+            
+            return (T) copiaListaUsuario.stream().filter(usuario -> usuario.equals(usu) || usuario.getCedula().equals(usu.getCedula())).findFirst().get();
+           
+            /*for(var usuario:copiaListaUsuario){
+                
                 if(usuario.equals(parametroBusqueda) || usuario.getCedula().equalsIgnoreCase(usu.getCedula()))
                     return (T) usuario;
-            }
+            }*/
         } else {
             var copiaListaTelefono = (List<Telefono>) listaGenerica;
+            return (T) copiaListaTelefono.stream().filter(telefo -> telefo.equals(parametroBusqueda)).findFirst().get();
+            /*
             for(var telefono:copiaListaTelefono){
                 if(telefono.equals(parametroBusqueda))
                     return (T) telefono;
-            }
+            }*/
         }
         
-        return null;
+        
         
         /*
         for(T objeto:listaGenerica){
